@@ -10,25 +10,41 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
 using System.IO;
+using System.Text.Json;
+using static TimStreamingTools.SettingsWindow;
 
 namespace TimStreamingTools
 {
     public partial class MainWindow : Form
     {
-
         bool ToggleStart = true;
         public string musictextfile;
+
+        public void LoadSettings()
+        {
+            string settingsfile = File.ReadAllText(Directory.GetCurrentDirectory() + @"\settings.json");
+
+            if (File.Exists(settingsfile))
+            {
+                Settings settingsjson = JsonSerializer.Deserialize<Settings>(settingsfile);
+                musictextfile = settingsjson.musicfile;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
 
+            LoadSettings();
+
             comboBoxMusicSelection.SelectedIndex = 0;
+            outputfiletextbox.Text = musictextfile; //do this but gooder
 
             PaddingSpacesUpAndDown.Enabled = radioButtonPaddingSpaces.Checked;
             paddingCharactersTextBox.Enabled = radioButtonCharacterPadding.Checked;
             PaddingCharactersUpAndDown.Enabled = radioButtonCharacterPadding.Checked;
+            
         }
-
         private void radioButtonPaddingSpaces_CheckedChanged(object sender, EventArgs e)
         {
             PaddingSpacesUpAndDown.Enabled = radioButtonPaddingSpaces.Checked;
