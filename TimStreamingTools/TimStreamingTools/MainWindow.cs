@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using System.IO;
 
 namespace TimStreamingTools
 {
@@ -16,9 +17,12 @@ namespace TimStreamingTools
     {
 
         bool ToggleStart = true;
+        public string musictextfile;
         public MainWindow()
         {
             InitializeComponent();
+
+            comboBoxMusicSelection.SelectedIndex = 0;
 
             PaddingSpacesUpAndDown.Enabled = radioButtonPaddingSpaces.Checked;
             paddingCharactersTextBox.Enabled = radioButtonCharacterPadding.Checked;
@@ -35,6 +39,118 @@ namespace TimStreamingTools
             PaddingCharactersUpAndDown.Enabled = radioButtonCharacterPadding.Checked;
 
         }
+
+        public void MusicText(string s)
+        {
+            string musicplayer = comboBoxMusicSelection.Items[comboBoxMusicSelection.SelectedIndex].ToString();
+
+            switch (s)
+            {
+                default:
+                    break;
+                case "on":
+                    switch (musicplayer)
+                    {
+                        default:
+                            MessageBox.Show("No Music Player Selected");
+                            break;
+                        case "Spotify":
+                            SpotifyTimer.Start();
+                            break;
+                    }
+                    break;
+
+                case "off":
+                    switch (musicplayer)
+                    {
+                        default:
+                            break;
+                        case "Spotify":
+                            SpotifyTimer.Stop();
+                            break;
+                    }
+                    break;
+            }
+            
+        }
+
+        public string PaddingString()
+        {
+            if(radioButtonPaddingSpaces.Checked)
+            {
+                if(!(PaddingSpacesUpAndDown.Value == 0))
+                {
+                    string spacestring = new string(' ', Convert.ToInt32(PaddingSpacesUpAndDown.Value));
+                    return spacestring;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            if (radioButtonCharacterPadding.Checked)
+            {
+                if(!(PaddingCharactersUpAndDown.Value == 0))
+                {
+                    if(!(paddingCharactersTextBox.Text == ""))
+                    {
+                        int characterrepeat = Convert.ToInt32(PaddingCharactersUpAndDown.Value);
+                        string characterpadding = "";
+
+                        for (int i = 0; i < characterrepeat; i++)
+                        {
+                            characterpadding += paddingCharactersTextBox.Text;
+                        }
+
+                        return characterpadding;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                    
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            
+            
+            return "";
+        }
+
+        public string musiccontent;
+        private void SpotifyTimer_Tick(object sender, EventArgs e)
+        {
+            var SpotifyList = Process.GetProcessesByName("Spotify");
+
+            foreach (Process process in SpotifyList)
+            {
+                if (process.ProcessName == "Spotify")
+                {
+                    if (process.MainWindowTitle != "")
+                    {
+                        Console.WriteLine(process.MainWindowTitle);
+
+                        musiccontent = process.MainWindowTitle + PaddingString();
+
+                        File.WriteAllText(musictextfile, musiccontent);
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
         private void btnSettings_Click(object sender, EventArgs e)
         {
             SettingsWindow settingsWindow;
@@ -48,16 +164,36 @@ namespace TimStreamingTools
             
         }
 
+        public bool bFile = false;
         private void btnMusicTextStart_Click(object sender, EventArgs e)
         {
-            if(ToggleStart)
+            
+            if(musictextfile == null)
             {
-                SpotifyTimer.Start();
+                MessageBox.Show("No Output File Selected");
+            }
+            else 
+            {
+                if (!File.Exists(musictextfile))
+                {
+                    File.Create(musictextfile);
+                    bFile = true;
+                }
+                else
+                {
+                    bFile = true;
+                }
+                
+            }
+            
+            if(ToggleStart && bFile)
+            {
+                MusicText("on");
                 ToggleStart = false;
                 btnMusicTextStart.Text = "Stop";
             }else
             {
-                SpotifyTimer.Stop();
+                MusicText("off");
                 ToggleStart = true;
                 btnMusicTextStart.Text = "Start";
             }
@@ -66,21 +202,13 @@ namespace TimStreamingTools
 
             
         }
-
-        private void SpotifyTimer_Tick(object sender, EventArgs e)
+        private void btnBrowseForOutputFile_Click(object sender, EventArgs e)
         {
-            var SpotifyList = Process.GetProcessesByName("Spotify");
+            OutputFileDialog.ShowDialog();
 
-            foreach(Process process in SpotifyList)
-            {
-                if(process.ProcessName == "Spotify")
-                {
-                    if(process.MainWindowTitle != "")
-                    {
-                        Console.WriteLine(process.MainWindowTitle);
-                    }
-                }
-            }
+            musictextfile = OutputFileDialog.FileName;
+
+            outputfiletextbox.Text = musictextfile;
         }
     }
 }

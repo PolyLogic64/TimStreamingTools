@@ -40,12 +40,13 @@
             this.radioButtonCharacterPadding = new System.Windows.Forms.RadioButton();
             this.btnBrowseForOutputFile = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.outputfiletextbox = new System.Windows.Forms.TextBox();
             this.btnMusicTextStart = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxMusicSelection = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSettings = new System.Windows.Forms.Button();
             this.SpotifyTimer = new System.Windows.Forms.Timer(this.components);
+            this.OutputFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PaddingCharactersUpAndDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PaddingSpacesUpAndDown)).BeginInit();
@@ -63,9 +64,9 @@
             this.panel1.Controls.Add(this.radioButtonCharacterPadding);
             this.panel1.Controls.Add(this.btnBrowseForOutputFile);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.outputfiletextbox);
             this.panel1.Controls.Add(this.btnMusicTextStart);
-            this.panel1.Controls.Add(this.comboBox1);
+            this.panel1.Controls.Add(this.comboBoxMusicSelection);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(13, 13);
             this.panel1.Name = "panel1";
@@ -155,6 +156,7 @@
             this.btnBrowseForOutputFile.TabIndex = 6;
             this.btnBrowseForOutputFile.Text = "Browse";
             this.btnBrowseForOutputFile.UseVisualStyleBackColor = true;
+            this.btnBrowseForOutputFile.Click += new System.EventHandler(this.btnBrowseForOutputFile_Click);
             // 
             // label2
             // 
@@ -166,13 +168,13 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Output File";
             // 
-            // textBox1
+            // outputfiletextbox
             // 
-            this.textBox1.Location = new System.Drawing.Point(7, 72);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(185, 20);
-            this.textBox1.TabIndex = 4;
+            this.outputfiletextbox.Location = new System.Drawing.Point(7, 72);
+            this.outputfiletextbox.Name = "outputfiletextbox";
+            this.outputfiletextbox.ReadOnly = true;
+            this.outputfiletextbox.Size = new System.Drawing.Size(185, 20);
+            this.outputfiletextbox.TabIndex = 4;
             // 
             // btnMusicTextStart
             // 
@@ -184,21 +186,18 @@
             this.btnMusicTextStart.UseVisualStyleBackColor = true;
             this.btnMusicTextStart.Click += new System.EventHandler(this.btnMusicTextStart_Click);
             // 
-            // comboBox1
+            // comboBoxMusicSelection
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.comboBoxMusicSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxMusicSelection.FormattingEnabled = true;
+            this.comboBoxMusicSelection.Items.AddRange(new object[] {
             "Spotify",
-            "Shit",
-            "in",
-            "My",
-            "Ass",
-            "Cum"});
-            this.comboBox1.Location = new System.Drawing.Point(7, 21);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
+            "This does not work",
+            "It really doesnt"});
+            this.comboBoxMusicSelection.Location = new System.Drawing.Point(7, 21);
+            this.comboBoxMusicSelection.Name = "comboBoxMusicSelection";
+            this.comboBoxMusicSelection.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxMusicSelection.TabIndex = 2;
             // 
             // label1
             // 
@@ -225,6 +224,11 @@
             this.SpotifyTimer.Interval = 500;
             this.SpotifyTimer.Tick += new System.EventHandler(this.SpotifyTimer_Tick);
             // 
+            // OutputFileDialog
+            // 
+            this.OutputFileDialog.DefaultExt = "txt";
+            this.OutputFileDialog.FileName = "tstmusictext.txt";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -249,10 +253,10 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxMusicSelection;
         private System.Windows.Forms.Button btnBrowseForOutputFile;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox outputfiletextbox;
         private System.Windows.Forms.Button btnMusicTextStart;
         private System.Windows.Forms.RadioButton radioButtonPaddingSpaces;
         private System.Windows.Forms.RadioButton radioButtonCharacterPadding;
@@ -264,6 +268,7 @@
         private System.Windows.Forms.TextBox paddingCharactersTextBox;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Timer SpotifyTimer;
+        private System.Windows.Forms.SaveFileDialog OutputFileDialog;
     }
 }
 
