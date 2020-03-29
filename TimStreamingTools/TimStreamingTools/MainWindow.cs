@@ -22,12 +22,14 @@ namespace TimStreamingTools
 
         public void LoadSettings()
         {
-            string settingsfile = File.ReadAllText(Directory.GetCurrentDirectory() + @"\settings.json");
+            //string settingsfile = File.ReadAllText(Directory.GetCurrentDirectory() + @"\settings.json");
 
-            if (File.Exists(settingsfile))
+            if (File.Exists(Directory.GetCurrentDirectory() + @"\settings.json"))
             {
+                string settingsfile = File.ReadAllText(Directory.GetCurrentDirectory() + @"\settings.json");
                 Settings settingsjson = JsonSerializer.Deserialize<Settings>(settingsfile);
                 musictextfile = settingsjson.musicfile;
+                outputfiletextbox.Text = settingsjson.musicfile;
             }
         }
 
@@ -45,6 +47,10 @@ namespace TimStreamingTools
             PaddingCharactersUpAndDown.Enabled = radioButtonCharacterPadding.Checked;
             
         }
+
+        //
+        // Music Part
+        //
         private void radioButtonPaddingSpaces_CheckedChanged(object sender, EventArgs e)
         {
             PaddingSpacesUpAndDown.Enabled = radioButtonPaddingSpaces.Checked;
@@ -139,33 +145,36 @@ namespace TimStreamingTools
         public string musiccontent;
         private void SpotifyTimer_Tick(object sender, EventArgs e)
         {
+            //Get all the Spotify Processes in the Machine
             var SpotifyList = Process.GetProcessesByName("Spotify");
 
+            // Loop through all the Processes and find the Spotify one
             foreach (Process process in SpotifyList)
             {
                 if (process.ProcessName == "Spotify")
                 {
                     if (process.MainWindowTitle != "")
                     {
-                        Console.WriteLine(process.MainWindowTitle);
+                        if(process.MainWindowTitle == "Spotify Free")
+                        {
+                            musiccontent = "Paused    ";
+                        }
+                        else if(process.MainWindowTitle == "Advertisement")
+                        {
+                            musiccontent = process.MainWindowTitle + "   ";
+                        }
+                        else
+                        {
+                            musiccontent = process.MainWindowTitle + PaddingString();
+                        }
 
-                        musiccontent = process.MainWindowTitle + PaddingString();
 
+                        musicOutputTextbox.Text = musiccontent;
                         File.WriteAllText(musictextfile, musiccontent);
                     }
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
@@ -214,17 +223,28 @@ namespace TimStreamingTools
                 btnMusicTextStart.Text = "Start";
             }
             
-            
-
-            
         }
         private void btnBrowseForOutputFile_Click(object sender, EventArgs e)
         {
-            OutputFileDialog.ShowDialog();
+            MusicOutputFileDialog.ShowDialog();
 
-            musictextfile = OutputFileDialog.FileName;
+            musictextfile = MusicOutputFileDialog.FileName;
 
             outputfiletextbox.Text = musictextfile;
         }
+
+        
+
+        //
+        // Time Part
+        //
+
+        
+
+
+
+
+
+
     }
 }

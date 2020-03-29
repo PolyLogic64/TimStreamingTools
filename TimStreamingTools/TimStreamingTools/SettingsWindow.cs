@@ -24,9 +24,22 @@ namespace TimStreamingTools
 
         }
 
+        public void LoadSettings()
+        {
+            if (File.Exists(Directory.GetCurrentDirectory() + @"\settings.json"))
+            {
+                string settingsfile = File.ReadAllText(Directory.GetCurrentDirectory() + @"\settings.json");
+                Settings settingsjson = JsonSerializer.Deserialize<Settings>(settingsfile);
+                DefaultOutputFileTextBox.Text = settingsjson.musicfile;
+                defaultmusicfile = settingsjson.musicfile;
+            }
+        }
+
         public SettingsWindow()
         {
             InitializeComponent();
+
+            LoadSettings();
         }
 
         public bool IsOpened()
