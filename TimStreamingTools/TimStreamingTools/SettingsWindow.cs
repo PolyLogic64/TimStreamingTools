@@ -15,12 +15,14 @@ namespace TimStreamingTools
     public partial class SettingsWindow : Form
     {
         public string defaultmusicfile;
+        public string defaulttimefile;
 
         Settings settings = new Settings();
         
         public class Settings
         {
             public string musicfile { get; set; }
+            public string timefile { get; set; }
 
         }
 
@@ -32,6 +34,8 @@ namespace TimStreamingTools
                 Settings settingsjson = JsonSerializer.Deserialize<Settings>(settingsfile);
                 DefaultOutputFileTextBox.Text = settingsjson.musicfile;
                 defaultmusicfile = settingsjson.musicfile;
+                textBox1.Text = settingsjson.timefile;
+                defaulttimefile = settingsjson.timefile;
             }
         }
 
@@ -72,6 +76,16 @@ namespace TimStreamingTools
             settings.musicfile = defaultmusicfile;
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DefaultTimeOutputFileDialog.ShowDialog();
+
+            defaulttimefile = DefaultTimeOutputFileDialog.FileName;
+            textBox1.Text = defaulttimefile;
+
+            settings.timefile = defaultmusicfile;
+        }
+
         private void btnSaveSettings_Click(object sender, EventArgs e)
         {
             string jsonstring = JsonSerializer.Serialize(settings);
@@ -88,5 +102,7 @@ namespace TimStreamingTools
             this.Close();
 
         }
+
+        
     }
 }

@@ -19,6 +19,7 @@ namespace TimStreamingTools
     {
         bool ToggleStart = true;
         public string musictextfile;
+        public string timetextfile;
 
         public void LoadSettings()
         {
@@ -30,6 +31,8 @@ namespace TimStreamingTools
                 Settings settingsjson = JsonSerializer.Deserialize<Settings>(settingsfile);
                 musictextfile = settingsjson.musicfile;
                 outputfiletextbox.Text = settingsjson.musicfile;
+                textBox4.Text = settingsjson.timefile;
+                timetextfile = settingsjson.timefile;
             }
         }
 
@@ -41,10 +44,14 @@ namespace TimStreamingTools
 
             comboBoxMusicSelection.SelectedIndex = 0;
             outputfiletextbox.Text = musictextfile; //do this but gooder
+            textBox4.Text = timetextfile;
 
             PaddingSpacesUpAndDown.Enabled = radioButtonPaddingSpaces.Checked;
             paddingCharactersTextBox.Enabled = radioButtonCharacterPadding.Checked;
             PaddingCharactersUpAndDown.Enabled = radioButtonCharacterPadding.Checked;
+
+
+            CurrentTimeTimer.Start();
             
         }
 
@@ -189,7 +196,7 @@ namespace TimStreamingTools
             
         }
 
-        public bool bFile = false;
+        public bool bMusicFile = false;
         private void btnMusicTextStart_Click(object sender, EventArgs e)
         {
             
@@ -202,16 +209,16 @@ namespace TimStreamingTools
                 if (!File.Exists(musictextfile))
                 {
                     File.Create(musictextfile);
-                    bFile = true;
+                    bMusicFile = true;
                 }
                 else
                 {
-                    bFile = true;
+                    bMusicFile = true;
                 }
                 
             }
             
-            if(ToggleStart && bFile)
+            if(ToggleStart && bMusicFile)
             {
                 MusicText("on");
                 ToggleStart = false;
@@ -233,18 +240,101 @@ namespace TimStreamingTools
             outputfiletextbox.Text = musictextfile;
         }
 
-        
 
         //
         // Time Part
         //
+        private void button1_Click(object sender, EventArgs e)
+        {
+            TimeOutputFileDialog.ShowDialog();
+
+            timetextfile = TimeOutputFileDialog.FileName;
+
+            textBox4.Text = timetextfile;
+        }
+        private string TimeFormat(string s,DateTime time,TimeZoneInfo timezone)
+        {
+            string sum = "";
+
+            /*
+            if (s.Contains("$h"))
+            {
+                Console.WriteLine(s.IndexOf("$h"));
+            }
+            if (s.Contains("$H"))
+            {
+                Console.WriteLine(s.IndexOf("$H"));
+            }
+            if (s.Contains("$m"))
+            {
+                Console.WriteLine(s.IndexOf("$m"));
+            }
+            if (s.Contains("$M"))
+            {
+                Console.WriteLine(s.IndexOf("$M"));
+            }
+            if (s.Contains("$s"))
+            {
+                Console.WriteLine(s.IndexOf("$s"));
+            }
+            if (s.Contains("$tg"))
+            {
+                Console.WriteLine(s.IndexOf("$tg"));
+            }
+            if (s.Contains("$tu"))
+            {
+                Console.WriteLine(s.IndexOf("$tu"));
+            }
+            */
+            if(timezone.GetUtcOffset(time).TotalHours < 0)
+            {
+                sum = time.ToLongTimeString() + " (GMT-" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
+            }
+            else
+            {
+                sum = time.ToLongTimeString() + " (GMT+" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
+            }
+
+            return sum;
+        }
+
+        private void CurrentTimeTimer_Tick(object sender, EventArgs e)
+        {
+            DateTime time = DateTime.Now;
+            TimeZoneInfo timezone = TimeZoneInfo.Local;
+
+            string outputstring = TimeFormat(textBox1.Text,time,timezone);
+
+            textBox3.Text = outputstring;
+            
+            string hms = time.ToLongTimeString();
+            textBox2.Text = hms;
+
+
+            if (timetextfile == null)
+            {
+
+            }
+            else
+            {
+
+                if (!File.Exists(timetextfile))
+                {
+                    File.Create(timetextfile);
+
+                }
+                else
+                {
+                    File.WriteAllText(timetextfile, outputstring);
+                }
+
+            }
+
+            
+
+
+        }
 
         
-
-
-
-
-
-
     }
 }
