@@ -11,15 +11,35 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using System.Text.Json;
-using static TimStreamingTools.SettingsWindow;
+using System.Runtime.CompilerServices;
 
 namespace TimStreamingTools
 {
     public partial class MainWindow : Form
     {
+        
+        public Settings settings = new Settings();
+
+        public class Settings
+        {
+            public string musicfile { get; set; }
+            public string timefile { get; set; }
+            public int paddingspacenum { get; set; }
+
+        }
+
         bool ToggleStart = true;
         public string musictextfile;
         public string timetextfile;
+        public int padspace;
+
+        public void SaveSettings()
+        {
+            string jsonstring = JsonSerializer.Serialize(settings);
+            File.WriteAllText(Directory.GetCurrentDirectory() + @"\settings.json", jsonstring);
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            Console.WriteLine(jsonstring);
+        }
 
         public void LoadSettings()
         {
@@ -33,6 +53,8 @@ namespace TimStreamingTools
                 outputfiletextbox.Text = settingsjson.musicfile;
                 textBox4.Text = settingsjson.timefile;
                 timetextfile = settingsjson.timefile;
+                padspace = settingsjson.paddingspacenum;
+                PaddingSpacesUpAndDown.Value = padspace;
             }
         }
 
@@ -40,8 +62,9 @@ namespace TimStreamingTools
         {
             InitializeComponent();
 
-            LoadSettings();
 
+
+            padspace = 0;
             comboBoxMusicSelection.SelectedIndex = 0;
             outputfiletextbox.Text = musictextfile; //do this but gooder
             textBox4.Text = timetextfile;
@@ -50,6 +73,7 @@ namespace TimStreamingTools
             paddingCharactersTextBox.Enabled = radioButtonCharacterPadding.Checked;
             PaddingCharactersUpAndDown.Enabled = radioButtonCharacterPadding.Checked;
 
+            LoadSettings();
 
             CurrentTimeTimer.Start();
             
@@ -103,11 +127,16 @@ namespace TimStreamingTools
             
         }
 
+        private void PaddingSpacesUpAndDown_ValueChanged(object sender, EventArgs e)
+        {
+            padspace = (int)PaddingSpacesUpAndDown.Value;
+        }
+
         public string PaddingString()
         {
             if(radioButtonPaddingSpaces.Checked)
             {
-                if(!(PaddingSpacesUpAndDown.Value == 0))
+                if(!(padspace == 0))
                 {
                     string spacestring = new string(' ', Convert.ToInt32(PaddingSpacesUpAndDown.Value));
                     return spacestring;
@@ -183,18 +212,7 @@ namespace TimStreamingTools
             }
         }
 
-        private void btnSettings_Click(object sender, EventArgs e)
-        {
-            SettingsWindow settingsWindow;
-            
-            settingsWindow = new SettingsWindow();
-
-            if (!settingsWindow.IsOpened())
-            {
-               settingsWindow.ShowDialog();
-            }
-            
-        }
+        
 
         public bool bMusicFile = false;
         private void btnMusicTextStart_Click(object sender, EventArgs e)
@@ -288,7 +306,7 @@ namespace TimStreamingTools
             */
             if(timezone.GetUtcOffset(time).TotalHours < 0)
             {
-                sum = time.ToLongTimeString() + " (GMT-" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
+                sum = time.ToLongTimeString() + " (GMT" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
             }
             else
             {
@@ -335,6 +353,21 @@ namespace TimStreamingTools
 
         }
 
-        
+        //
+        // Misc Part
+        //
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            settings.paddingspacenum = padspace;
+            settings.musicfile = musictextfile;
+            settings.timefile = timetextfile;
+            
+            
+            SaveSettings();
+        }
+
+
+
     }
 }

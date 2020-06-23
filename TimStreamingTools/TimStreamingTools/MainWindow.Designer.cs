@@ -45,7 +45,6 @@
             this.outputfiletextbox = new System.Windows.Forms.TextBox();
             this.btnMusicTextStart = new System.Windows.Forms.Button();
             this.comboBoxMusicSelection = new System.Windows.Forms.ComboBox();
-            this.btnSettings = new System.Windows.Forms.Button();
             this.SpotifyTimer = new System.Windows.Forms.Timer(this.components);
             this.MusicOutputFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.button3 = new System.Windows.Forms.Button();
@@ -63,7 +62,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.CurrentTimeTimer = new System.Windows.Forms.Timer(this.components);
             this.TimeOutputFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.PaddingCharactersUpAndDown)).BeginInit();
@@ -136,6 +134,7 @@
             this.PaddingSpacesUpAndDown.Name = "PaddingSpacesUpAndDown";
             this.PaddingSpacesUpAndDown.Size = new System.Drawing.Size(35, 20);
             this.PaddingSpacesUpAndDown.TabIndex = 9;
+            this.PaddingSpacesUpAndDown.ValueChanged += new System.EventHandler(this.PaddingSpacesUpAndDown_ValueChanged);
             // 
             // paddingCharactersTextBox
             // 
@@ -223,17 +222,6 @@
             this.comboBoxMusicSelection.Name = "comboBoxMusicSelection";
             this.comboBoxMusicSelection.Size = new System.Drawing.Size(121, 21);
             this.comboBoxMusicSelection.TabIndex = 2;
-            // 
-            // btnSettings
-            // 
-            this.btnSettings.ForeColor = System.Drawing.Color.Black;
-            this.btnSettings.Location = new System.Drawing.Point(695, 12);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(75, 23);
-            this.btnSettings.TabIndex = 2;
-            this.btnSettings.Text = "Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // SpotifyTimer
             // 
@@ -425,18 +413,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Music Text";
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Enabled = false;
-            this.groupBox3.ForeColor = System.Drawing.Color.White;
-            this.groupBox3.Location = new System.Drawing.Point(695, 41);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(38, 23);
-            this.groupBox3.TabIndex = 6;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Countdown Text";
-            this.groupBox3.Visible = false;
-            // 
             // CurrentTimeTimer
             // 
             this.CurrentTimeTimer.Interval = 500;
@@ -447,17 +423,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.ClientSize = new System.Drawing.Size(784, 344);
-            this.Controls.Add(this.groupBox3);
+            this.ClientSize = new System.Drawing.Size(783, 341);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnSettings);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tim\'s Streaming Tools";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.PaddingCharactersUpAndDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PaddingSpacesUpAndDown)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -482,7 +457,6 @@
         private System.Windows.Forms.NumericUpDown PaddingCharactersUpAndDown;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox paddingCharactersTextBox;
-        private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Timer SpotifyTimer;
         private System.Windows.Forms.SaveFileDialog MusicOutputFileDialog;
         private System.Windows.Forms.TextBox musicOutputTextbox;
@@ -502,7 +476,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Timer CurrentTimeTimer;
         private System.Windows.Forms.SaveFileDialog TimeOutputFileDialog;
     }
