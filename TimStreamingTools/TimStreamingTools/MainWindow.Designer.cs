@@ -48,7 +48,7 @@
             this.SpotifyTimer = new System.Windows.Forms.Timer(this.components);
             this.MusicOutputFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.formatResetBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -244,16 +244,16 @@
             this.button3.Text = "Format Keys";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // formatResetBtn
             // 
-            this.button2.Enabled = false;
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(212, 69);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 12;
-            this.button2.Text = "Reset";
-            this.button2.UseVisualStyleBackColor = true;
+            this.formatResetBtn.ForeColor = System.Drawing.Color.Black;
+            this.formatResetBtn.Location = new System.Drawing.Point(212, 69);
+            this.formatResetBtn.Name = "formatResetBtn";
+            this.formatResetBtn.Size = new System.Drawing.Size(75, 23);
+            this.formatResetBtn.TabIndex = 12;
+            this.formatResetBtn.Text = "Reset";
+            this.formatResetBtn.UseVisualStyleBackColor = true;
+            this.formatResetBtn.Click += new System.EventHandler(this.formatResetBtn_Click);
             // 
             // button1
             // 
@@ -306,7 +306,6 @@
             // 
             // textBox1
             // 
-            this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(106, 71);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
@@ -369,7 +368,7 @@
             // 
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.checkBox2);
-            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.formatResetBtn);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label9);
@@ -469,7 +468,7 @@
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button formatResetBtn;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox3;

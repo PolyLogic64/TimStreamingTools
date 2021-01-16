@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Threading;
 using System.IO;
 using System.Text.Json;
-using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace TimStreamingTools
 {
@@ -262,6 +254,8 @@ namespace TimStreamingTools
         //
         // Time Part
         //
+
+        Regex hourPadding = new Regex(@"![hHmMsS]");
         private void button1_Click(object sender, EventArgs e)
         {
             TimeOutputFileDialog.ShowDialog();
@@ -273,45 +267,40 @@ namespace TimStreamingTools
         private string TimeFormat(string s,DateTime time,TimeZoneInfo timezone)
         {
             string sum = "";
+            char[] input = textBox1.Text.ToCharArray();
 
-            /*
-            if (s.Contains("$h"))
+            for (int i = 0; i < input.Length; i++)
             {
-                Console.WriteLine(s.IndexOf("$h"));
+                if(hourPadding.IsMatch(textBox1.Text))
+                {
+                    foreach (Match key in hourPadding.Matches(textBox1.Text))
+                    {
+                        Console.WriteLine(key.Value);
+                        if(key.Value=="!h")
+                        {
+
+                        }
+
+                    }
+
+                    
+                }
+                
+
+                
+                
+
+                
             }
-            if (s.Contains("$H"))
-            {
-                Console.WriteLine(s.IndexOf("$H"));
-            }
-            if (s.Contains("$m"))
-            {
-                Console.WriteLine(s.IndexOf("$m"));
-            }
-            if (s.Contains("$M"))
-            {
-                Console.WriteLine(s.IndexOf("$M"));
-            }
-            if (s.Contains("$s"))
-            {
-                Console.WriteLine(s.IndexOf("$s"));
-            }
-            if (s.Contains("$tg"))
-            {
-                Console.WriteLine(s.IndexOf("$tg"));
-            }
-            if (s.Contains("$tu"))
-            {
-                Console.WriteLine(s.IndexOf("$tu"));
-            }
-            */
-            if(timezone.GetUtcOffset(time).TotalHours < 0)
-            {
-                sum = time.ToLongTimeString() + " (GMT" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
-            }
-            else
-            {
-                sum = time.ToLongTimeString() + " (GMT+" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
-            }
+
+            //if(timezone.GetUtcOffset(time).TotalHours < 0)
+            //{
+            //    sum = time.ToLongTimeString() + " (GMT" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
+            //}
+            //else
+            //{
+            //    sum = time.ToLongTimeString() + " (GMT+" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
+            //}
 
             return sum;
         }
@@ -329,7 +318,7 @@ namespace TimStreamingTools
             textBox2.Text = hms;
 
 
-            if (timetextfile == null)
+            if (timetextfile == null || timetextfile == "")
             {
 
             }
@@ -353,6 +342,11 @@ namespace TimStreamingTools
 
         }
 
+        private void formatResetBtn_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+        }
+
         //
         // Misc Part
         //
@@ -367,7 +361,6 @@ namespace TimStreamingTools
             SaveSettings();
         }
 
-
-
+        
     }
 }
