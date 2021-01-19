@@ -267,40 +267,15 @@ namespace TimStreamingTools
         private string TimeFormat(string s,DateTime time,TimeZoneInfo timezone)
         {
             string sum = "";
-            char[] input = textBox1.Text.ToCharArray();
-
-            for (int i = 0; i < input.Length; i++)
+            
+            if(timezone.GetUtcOffset(time).TotalHours < 0)
             {
-                if(hourPadding.IsMatch(textBox1.Text))
-                {
-                    foreach (Match key in hourPadding.Matches(textBox1.Text))
-                    {
-                        Console.WriteLine(key.Value);
-                        if(key.Value=="!h")
-                        {
-
-                        }
-
-                    }
-
-                    
-                }
-                
-
-                
-                
-
-                
+                sum = time.ToLongTimeString() + " (GMT" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
             }
-
-            //if(timezone.GetUtcOffset(time).TotalHours < 0)
-            //{
-            //    sum = time.ToLongTimeString() + " (GMT" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
-            //}
-            //else
-            //{
-            //    sum = time.ToLongTimeString() + " (GMT+" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
-            //}
+            else
+            {
+                sum = time.ToLongTimeString() + " (GMT+" + timezone.GetUtcOffset(time).TotalHours.ToString() + ")";
+            }
 
             return sum;
         }
