@@ -103,9 +103,19 @@
             // 
             this.PaddingCharactersUpAndDown.ForeColor = System.Drawing.Color.Black;
             this.PaddingCharactersUpAndDown.Location = new System.Drawing.Point(89, 185);
+            this.PaddingCharactersUpAndDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.PaddingCharactersUpAndDown.Name = "PaddingCharactersUpAndDown";
             this.PaddingCharactersUpAndDown.Size = new System.Drawing.Size(38, 20);
             this.PaddingCharactersUpAndDown.TabIndex = 14;
+            this.PaddingCharactersUpAndDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label4
             // 

@@ -11,19 +11,15 @@ namespace TimStreamingTools
     {
         
         public Settings settings = new Settings();
-
+        
         public class Settings
         {
             public string musicfile { get; set; }
             public string timefile { get; set; }
             public int paddingspacenum { get; set; }
-
+            public decimal paddingcharnum { get; set; }
+            public string paddingcharstring { get; set; }
         }
-
-        bool ToggleStart = true;
-        public string musictextfile;
-        public string timetextfile;
-        public int padspace;
 
         public void SaveSettings()
         {
@@ -32,6 +28,7 @@ namespace TimStreamingTools
             Console.WriteLine(Directory.GetCurrentDirectory());
             Console.WriteLine(jsonstring);
         }
+
 
         public void LoadSettings()
         {
@@ -47,16 +44,23 @@ namespace TimStreamingTools
                 timetextfile = settingsjson.timefile;
                 padspace = settingsjson.paddingspacenum;
                 PaddingSpacesUpAndDown.Value = padspace;
+                paddingCharactersTextBox.Text = settingsjson.paddingcharstring;
+                PaddingCharactersUpAndDown.Value = settingsjson.paddingcharnum;
+
             }
         }
 
+        bool ToggleStart = true;
+        public string musictextfile;
+        public string timetextfile;
+        public int padspace;
+        public int padcharcount;
+        public string padcharstring;
+        
         public MainWindow()
         {
             InitializeComponent();
 
-
-
-            padspace = 0;
             comboBoxMusicSelection.SelectedIndex = 0;
             outputfiletextbox.Text = musictextfile; //do this but gooder
             textBox4.Text = timetextfile;
@@ -77,6 +81,7 @@ namespace TimStreamingTools
         private void radioButtonPaddingSpaces_CheckedChanged(object sender, EventArgs e)
         {
             PaddingSpacesUpAndDown.Enabled = radioButtonPaddingSpaces.Checked;
+            
         }
         private void radioButtonCharacterPadding_CheckedChanged(object sender, EventArgs e)
         {
@@ -183,7 +188,7 @@ namespace TimStreamingTools
                 {
                     if (process.MainWindowTitle != "")
                     {
-                        if(process.MainWindowTitle == "Spotify Free")
+                        if(process.MainWindowTitle == "Spotify Free" || process.MainWindowTitle == "Spotify Premium")
                         {
                             musiccontent = "Paused    ";
                         }
@@ -331,8 +336,11 @@ namespace TimStreamingTools
             settings.paddingspacenum = padspace;
             settings.musicfile = musictextfile;
             settings.timefile = timetextfile;
-            
-            
+            settings.paddingcharstring = paddingCharactersTextBox.Text;
+            settings.paddingcharnum = PaddingCharactersUpAndDown.Value;
+
+
+
             SaveSettings();
         }
 
