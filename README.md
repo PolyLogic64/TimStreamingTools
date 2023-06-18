@@ -1,3 +1,5 @@
+# **THIS IS DEAD AND FUCKING ARCHIVED DO NOT USE I AM MAKING A NEW VERSION**
+
 # TimStreamingTools
 A tool that I use form Streaming.
 It has a Music Section where you can display the current Spotify Song in a text file,
